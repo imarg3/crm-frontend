@@ -19,8 +19,8 @@ import {
   ArrowUp,
 } from "@phosphor-icons/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
-import { StatisticsCard } from "../../../widgets/cards/statistics-card";
-import { StatisticsChart } from "../../../widgets/charts";
+import { StatisticsCard } from "../../widgets/cards/statistics-card";
+import { StatisticsChart } from "../../widgets/charts";
 import {
   statisticsCardsData,
   statisticsChartsData,

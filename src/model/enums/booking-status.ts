@@ -1,0 +1,4 @@
+enum BookingStatus {
+    Completed,
+    Hold
+}
