@@ -11,8 +11,8 @@ import {
   Wallet,
 } from "@phosphor-icons/react";
 import { Card } from "../views/Card";
-import CardImage1 from "../../assets/bookingImage1.jpeg";
-import CardImage2 from "../../assets/bookingImage2.jpeg";
+import CardImage1 from "../../../assets/bookingImage1.jpeg";
+import CardImage2 from "../../../assets/bookingImage2.jpeg";
 
 const BookingSteps = () => {
   const renderIcons = useCallback((element: number) => {

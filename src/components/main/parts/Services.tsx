@@ -1,13 +1,13 @@
 import { Image } from "../views/Image"
 import { Text } from "../views/Text"
 import { ServiceTexts } from "../variables/Variables"
-import GroupOfPlus from "../../assets/plusGroup.png"
+import GroupOfPlus from "../../../assets/plusGroup.png"
 import { Card } from "../views/Card"
 import { useCallback } from "react"
-import Icon1 from "../../assets/icon1.png"
-import Icon2 from "../../assets/icon2.png"
-import Icon3 from "../../assets/icon3.png"
-import Icon4 from "../../assets/icon4.png"
+import Icon1 from "../../../assets/icon1.png"
+import Icon2 from "../../../assets/icon2.png"
+import Icon3 from "../../../assets/icon3.png"
+import Icon4 from "../../../assets/icon4.png"
 import { Fade } from "react-awesome-reveal"
 
 

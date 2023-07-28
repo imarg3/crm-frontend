@@ -9,7 +9,7 @@ import {
   Footer,
 } from "../widgets/layout";
 import routes from "../variables/routes";
-import { useMaterialTailwindController, setOpenConfigurator } from "../../context";
+import { useMaterialTailwindController, setOpenConfigurator } from "../context";
 
 export function Dashboard() {
   const [controller, dispatch] = useMaterialTailwindController();

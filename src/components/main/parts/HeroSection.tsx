@@ -1,6 +1,6 @@
 import { Image } from "../views/Image"
-import bgImage from "../../assets/HeroVector.png"
-import heroImage from "../../assets/hero-img.png"
+import bgImage from "../../../assets/HeroVector.png"
+import heroImage from "../../../assets/hero-img.png"
 import { Text } from "../views/Text"
 import { HeroTexts } from "../variables/Variables"
 import { Button } from "../views/Button"

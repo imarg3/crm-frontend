@@ -2,7 +2,7 @@ import { Image } from "../views/Image"
 import { Text } from "../views/Text"
 import { SubscribeForm } from "../views/SubscribeForm"
 import { NewsletterTexts } from "../variables/Variables"
-import groupOfPlus from "../../assets/plusGroup2.png"
+import groupOfPlus from "../../../assets/plusGroup2.png"
 
 
 const NewsLetter = () => {

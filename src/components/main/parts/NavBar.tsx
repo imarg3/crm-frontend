@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Image } from "../views/Image";
 import { Button } from "../views/Button";
-import Logo from "../../assets/logo1.png";
+import Logo from "../../../assets/logo1.png";
 import { NavButtons, NavLinks } from "../variables/Variables";
 import { List } from "../views/List";
 import { Slide } from "react-awesome-reveal";

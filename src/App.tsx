@@ -3,8 +3,8 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { animateScroll } from "react-scroll";
-import Home from "./components/pages/Home";
-import { Dashboard } from "./components/views/Dashboard";
+import Home from "./components/main/Home";
+import { Dashboard } from "./components/dashboard/views/Dashboard";
 import { useEffect } from "react";
 
 function App() {

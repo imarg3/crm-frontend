@@ -1,11 +1,11 @@
 import { Image } from "../views/Image"
-import logo from "../../assets/logo1.png"
+import logo from "../../../assets/logo1.png"
 import { Text } from "../views/Text"
 import { FooterTexts } from "../variables/Variables"
 import { List } from "../views/List"
 import { Link } from "react-router-dom"
 import { FacebookLogo, InstagramLogo, TwitterLogo } from "@phosphor-icons/react"
-import app from "../../assets/appdownload.png"
+import app from "../../../assets/appdownload.png"
 
 
 const Footer = () => {

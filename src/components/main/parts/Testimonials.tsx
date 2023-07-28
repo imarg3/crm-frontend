@@ -5,10 +5,10 @@ import Slider from "react-slick";
 import { Button } from "../views/Button";
 import { CaretDown, CaretUp } from "@phosphor-icons/react";
 import { Card } from "../views/Card";
-import ProfileImg1 from "../../assets/profile1.jpeg"
-import ProfileImg2 from "../../assets/profile2.jpeg"
-import ProfileImg3 from "../../assets/profile3.jpeg"
-import ProfileImg4 from "../../assets/profile4.jpeg"
+import ProfileImg1 from "../../../assets/profile1.jpeg"
+import ProfileImg2 from "../../../assets/profile2.jpeg"
+import ProfileImg3 from "../../../assets/profile3.jpeg"
+import ProfileImg4 from "../../../assets/profile4.jpeg"
 
 const Testimonials = () => {
     const sliderRef = useRef<Slider | null>();

@@ -26,7 +26,7 @@ import {
   statisticsChartsData,
   projectsTableData,
   ordersOverviewData,
-} from "../../../data";
+} from "../../data";
 
 export function Home() {
   return (

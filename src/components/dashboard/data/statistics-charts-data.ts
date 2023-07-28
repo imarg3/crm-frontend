@@ -1,4 +1,4 @@
-import { chartsConfig } from "../components/variables/Charts-Config";
+import { chartsConfig } from "../../../components/dashboard/variables/Charts-Config";
 
 const websiteViewsChart = {
   type: "bar",

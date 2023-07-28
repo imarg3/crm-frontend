@@ -1,7 +1,7 @@
 import Slider from "react-slick"
-import partners1 from "../../assets/partners1.png"
-import partners2 from "../../assets/partners2.png"
-import partners3 from "../../assets/partners3.png"
+import partners1 from "../../../assets/partners1.png"
+import partners2 from "../../../assets/partners2.png"
+import partners3 from "../../../assets/partners3.png"
 import { Card } from "../views/Card"
 
 
