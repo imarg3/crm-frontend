@@ -1,4 +1,6 @@
-type Lead = {
+import { Status } from "../enums/status"
+
+export type Lead = {
     customerName: Pick<Customer, "name">,
     mobile: Pick<Customer, "mobile">,
     createdDate: Date,

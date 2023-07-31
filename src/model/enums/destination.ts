@@ -1,4 +1,4 @@
-enum Destination {
+export enum Destination {
     Dubai = "DUBAI",
     Singapore = "SINGAPORE",
     Malaysia = "MALAYSIA",

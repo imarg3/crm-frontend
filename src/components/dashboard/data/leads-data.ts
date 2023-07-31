@@ -1,7 +1,10 @@
-export const LeadsTableData: Lead[] = [
+import { Destination, Status } from "../../../model/enums";
+import { Lead } from "../../../model/types/lead"
+
+export const leadsTableData: Lead[] = [
     {
         "customerName": {name: "Travel Me"},
-        "mobile": {"mobile": 999998888},
+        "mobile": {mobile: 999998888},
         "createdDate": new Date("2023-07-26"),
         "destinations": {destinations: [Destination.Dubai, Destination.Singapore]},
         "departureCity": {departureCity: "Pune"},

@@ -1,7 +1,7 @@
 import React from "react";
 import {
   Navbar,
-  MobileNav,
+  Collapse,
   Typography,
   Button,
   Menu,
@@ -157,12 +157,10 @@ function NavListMenu() {
           </Typography>
         </MenuHandler>
         <MenuList className="p-1">
-        {navListMenuItems.map(({ label, icon, path }, key) => {          
-          
-          return (
-            <NavLink to={`/${path}`}>
+        {navListMenuItems.map(({ label, icon, path }, index) => (                    
+            <NavLink key={index} to={`/${path}`}>
             <MenuItem
-              key={label}
+              key={index}
               onClick={closeMenu}
               className="flex items-center gap-2 rounded"            
             >
@@ -179,8 +177,7 @@ function NavListMenu() {
               </Typography>
             </MenuItem>
             </NavLink>
-          );
-        })}
+        ))}
       </MenuList>
       </Menu>      
     </React.Fragment>
@@ -266,9 +263,9 @@ export function MainNavbar() {
         </IconButton>
         <ProfileMenu />
       </div>
-      <MobileNav open={isNavOpen} className="overflow-scroll">
+      <Collapse open={isNavOpen} className="overflow-scroll">
         <NavList />
-      </MobileNav>
+      </Collapse>
     </Navbar>
   );
 }

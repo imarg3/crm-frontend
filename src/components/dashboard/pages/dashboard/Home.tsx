@@ -19,7 +19,7 @@ import {
   ArrowUp,
 } from "@phosphor-icons/react";
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
-import { StatisticsCard } from "../../widgets/cards/statistics-card";
+import { StatisticsCard } from "../../widgets/cards/StatisticsCard";
 import { StatisticsChart } from "../../widgets/charts";
 import {
   statisticsCardsData,
