@@ -5,36 +5,27 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/solid";
+import { Lead } from "../../../../model/interfaces/lead";
 
 const TableBody = ({ data }) => {
   return (
     <tbody>
       {data.map(
         (
-          {
-            customerName,
-            mobile,
-            createdDate,
-            destinations,
-            departureCity,
-            travelDate,
-            totalNights,
-            status,
-          },
-          index
+          leads: Lead, index        
         ) => {
           const isLast = index === data.length - 1;
           const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";          
 
           return (
-            <tr key={index}>
+            <tr key={leads.id}>
                 <td className={classes}>
                 <Typography
                   variant="small"
                   color="blue-gray"
                   className="font-normal"
                 >
-                  {index+1}
+                  {leads.id}
                 </Typography>
               </td>
               <td className={classes}>
@@ -46,7 +37,7 @@ const TableBody = ({ data }) => {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {customerName}
+                      {leads.customerName.name}
                     </Typography>
                     {/*
                         <Typography
@@ -66,7 +57,7 @@ const TableBody = ({ data }) => {
                   color="blue-gray"
                   className="font-normal"
                 >
-                  {mobile}
+                  {leads.mobile.mobile}
                 </Typography>
               </td>
               <td className={classes}>
@@ -75,7 +66,7 @@ const TableBody = ({ data }) => {
                   color="blue-gray"
                   className="font-normal"
                 >
-                  {createdDate}
+                  {leads.createdDate.toLocaleDateString()}
                 </Typography>
               </td>
               <td className={classes}>
@@ -85,7 +76,7 @@ const TableBody = ({ data }) => {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {destinations}
+                    {leads.destinations.destinations}
                   </Typography>
                 </div>
               </td>
@@ -96,7 +87,7 @@ const TableBody = ({ data }) => {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {departureCity}
+                    {leads.departureCity.departureCity}
                   </Typography>
                 </div>
               </td>
@@ -107,7 +98,7 @@ const TableBody = ({ data }) => {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {travelDate}
+                    {leads.travelDate.travelDate.toLocaleDateString()}
                   </Typography>
                 </div>
               </td>
@@ -117,7 +108,7 @@ const TableBody = ({ data }) => {
                   color="blue-gray"
                   className="font-normal"
                 >
-                  {totalNights}
+                  {leads.totalNights.totalNights}
                 </Typography>
               </td>
               <td className={classes}>
@@ -125,7 +116,7 @@ const TableBody = ({ data }) => {
                   <Chip
                     variant="ghost"
                     size="sm"
-                    value={status}
+                    value={leads.status}
                     /*value={online ? "online" : "offline"}
                         color={online ? "green" : "blue-gray"}*/
                   />
