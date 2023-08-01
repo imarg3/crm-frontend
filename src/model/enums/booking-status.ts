@@ -1,4 +1,4 @@
-enum BookingStatus {
-    Completed,
-    Hold
+export enum BookingStatus {
+    confirmed = "Confirmed",
+    hold = "Hold"
 }

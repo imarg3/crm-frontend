@@ -1,4 +1,7 @@
-interface TravelDetails {    
+import { Destination } from "../enums"
+import { PersonType } from "../enums/person"
+
+export interface TravelDetails {    
     departureCity: string,
     nationality: string,
     travelDate: Date,

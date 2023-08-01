@@ -1,4 +1,4 @@
-enum PersonType {
-    adult = "Adult",
-    child = "Child"
+export enum PersonType {
+    Adult = "Adult",
+    Child = "Child"
 }

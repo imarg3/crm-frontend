@@ -1,4 +1,4 @@
-enum BookingType {
-    package = "PACKAGE",
-    hotel = "HOTEL"
+export enum BookingType {
+    package = "Package",
+    hotel = "Hotel"
 }

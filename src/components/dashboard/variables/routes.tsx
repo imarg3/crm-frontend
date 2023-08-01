@@ -8,6 +8,8 @@ import {
   } from "@heroicons/react/24/solid";
   import { Home, Profile, Notifications, Leads } from "../pages/dashboard";
   import { SignIn, SignUp } from "../pages/auth";
+import Booking from "../pages/dashboard/bookings/Booking";
+import Proposal from "../pages/dashboard/proposals/Proposal";
   
   const icon = {
     className: "w-5 h-5 text-inherit",
@@ -38,6 +40,14 @@ import {
         {
           path: "/leads",
           element: <Leads />,
+        },
+        {
+          path: "/proposals",
+          element: <Proposal />,
+        },
+        {
+          path: "/bookings",
+          element: <Booking />,
         }
       ],
     },
