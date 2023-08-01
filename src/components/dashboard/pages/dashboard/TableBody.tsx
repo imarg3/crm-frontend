@@ -76,7 +76,7 @@ const TableBody = ({ data }) => {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {leads.destinations.destinations}
+                    {leads.destinations.destinations.join(", ")}                     
                   </Typography>
                 </div>
               </td>
