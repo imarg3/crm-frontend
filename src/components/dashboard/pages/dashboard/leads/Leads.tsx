@@ -1,4 +1,4 @@
-import { useSortableTable } from "../../../../shared/useSotableTable"; 
+import { useSortableTable } from "../../../../../shared/useSotableTable"; 
 import LeadsTable from "./LeadsTable";
  
 export function Leads() {

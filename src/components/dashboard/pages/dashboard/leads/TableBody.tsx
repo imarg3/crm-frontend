@@ -5,7 +5,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/solid";
-import { Lead } from "../../../../model/interfaces/lead";
+import { Lead } from "../../../../../model/interfaces/lead";
 
 const TableBody = ({ data }) => {
   return (
