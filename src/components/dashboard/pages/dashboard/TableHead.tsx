@@ -6,7 +6,7 @@ const TableHead = ({ columns, SortIcon }) => {
   return (
     <thead>
       <tr>
-        {columns.map((column, index) => {          
+        {columns.map((column) => {          
           return (
           <th
             key={column.key}

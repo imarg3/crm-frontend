@@ -9,7 +9,7 @@ import TableFooter from "./TableFooter";
 import { leadsTableData } from "../../data/leads-data";
 
 type Data = typeof leadsTableData;
-type SortKeys = keyof Data[0];
+type SortKeys = "id" | "name" | "mobile" | "createdDate" | "destinations" | "departureCity" | "travelDate" | "totalNights" | "status" | "edit";
 type SortOrder = "asc" | "desc";
 
 const sortData = ({
@@ -27,7 +27,7 @@ const sortData = ({
     if(sortKey === "id" || sortKey === "createdDate" || sortKey === "status") {
         return a[sortKey] > b[sortKey] ? 1 : -1;
     }
-    if(sortKey === "customerName" || sortKey === "mobile" || sortKey === "destinations" 
+    if(sortKey === "name" || sortKey === "mobile" || sortKey === "destinations" 
     || sortKey === "departureCity" || sortKey === "travelDate" || sortKey === "totalNights") {
         return Object.values(a[sortKey])
         .toString()
@@ -78,16 +78,17 @@ const LeadsTable = () => {
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
   const [searchValue, setSearchValue] = useState("");
-  const columns: { key: SortKeys; label: string }[] = [
-    { key: "id", label: "#" },
-    { key: "customerName", label: "Customer Name" },
-    { key: "mobile", label: "Mobile" },
-    { key: "createdDate", label: "Created Date" },
-    { key: "destinations", label: "Destinations" },
-    { key: "departureCity", label: "From" },
-    { key: "travelDate", label: "Travel Date" },
-    { key: "totalNights", label: "Nights" },
-    { key: "status", label: "Status" },
+  const columns: { key: SortKeys; label: string, sortable: boolean }[] = [
+    { key: "id", label: "#", sortable: true },
+    { key: "name", label: "Customer Name", sortable: true },
+    { key: "mobile", label: "Mobile", sortable: true },
+    { key: "createdDate", label: "Created Date", sortable: true },
+    { key: "destinations", label: "Destinations", sortable: true },
+    { key: "departureCity", label: "From", sortable: true },
+    { key: "travelDate", label: "Travel Date", sortable: true },
+    { key: "totalNights", label: "Nights", sortable: true },
+    { key: "status", label: "Status", sortable: true },
+    { key: "edit", label: "", sortable: false },
   ];
 
   const sortedData = useCallback(
@@ -138,12 +139,12 @@ const LeadsTable = () => {
                       color="blue-gray"
                       className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
                     >
-                      {column.label}{" "}
-                      <SortIcon
+                      {column.label}{" "}                      
+                      {column.sortable ? (<SortIcon
                         columnKey={column.key}
                         onClick={() => changeSort(column.key)}
                         {...{ sortOrder, sortKey }}
-                      />
+                      />) : (<></>)}
                     </Typography>
                   </th>
                 );

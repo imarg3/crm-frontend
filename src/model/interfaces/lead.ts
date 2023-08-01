@@ -1,16 +1,12 @@
 import { Status } from "../enums/status"
 
-type CustomerName = Pick<Customer, "name">
-type MobileType = Pick<Customer, "mobile">
+type CustomerInfo = Pick<Customer, "name" | "mobile">
+type TravelDetailsInfo = Pick<TravelDetails, "destinations" | "departureCity" | "travelDate" | "totalNights">
 
 export interface Lead {
     id: number,
-    customerName: CustomerName,
-    mobile: MobileType,
+    customerInfo: CustomerInfo,    
     createdDate: Date,
-    destinations: Pick<TravelDetails, "destinations">,
-    departureCity: Pick<TravelDetails, "departureCity">,
-    travelDate: Pick<TravelDetails, "travelDate">,
-    totalNights: Pick<TravelDetails, "totalNights">,
+    travelDetailsInfo: TravelDetailsInfo    
     status: Status
 }

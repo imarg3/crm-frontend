@@ -37,7 +37,7 @@ const TableBody = ({ data }) => {
                       color="blue-gray"
                       className="font-normal"
                     >
-                      {leads.customerName.name}
+                      {leads.customerInfo.name}
                     </Typography>
                     {/*
                         <Typography
@@ -57,7 +57,7 @@ const TableBody = ({ data }) => {
                   color="blue-gray"
                   className="font-normal"
                 >
-                  {leads.mobile.mobile}
+                  {leads.customerInfo.mobile}
                 </Typography>
               </td>
               <td className={classes}>
@@ -76,7 +76,7 @@ const TableBody = ({ data }) => {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {leads.destinations.destinations.join(", ")}                     
+                    {leads.travelDetailsInfo.destinations.join(", ")}                     
                   </Typography>
                 </div>
               </td>
@@ -87,7 +87,7 @@ const TableBody = ({ data }) => {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {leads.departureCity.departureCity}
+                    {leads.travelDetailsInfo.departureCity}
                   </Typography>
                 </div>
               </td>
@@ -98,7 +98,7 @@ const TableBody = ({ data }) => {
                     color="blue-gray"
                     className="font-normal"
                   >
-                    {leads.travelDate.travelDate.toLocaleDateString()}
+                    {leads.travelDetailsInfo.travelDate.toLocaleDateString()}
                   </Typography>
                 </div>
               </td>
@@ -108,7 +108,7 @@ const TableBody = ({ data }) => {
                   color="blue-gray"
                   className="font-normal"
                 >
-                  {leads.totalNights.totalNights}
+                  {leads.travelDetailsInfo.totalNights}
                 </Typography>
               </td>
               <td className={classes}>
