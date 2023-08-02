@@ -2,24 +2,22 @@ import { useState, useEffect, useCallback, MouseEventHandler } from "react";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import api from "../../../../../api/axiosConfig";
-import TableHeader from "../bookings/TableHeader";
-import TableHead from "../bookings/TableHead";
-import TableBody from "../bookings/TableBody";
-import TableFooter from "../bookings/TableFooter";
-import { bookingsTableData } from "../../../data/bookings-data";
+import TableHeader from "../proposals/TableHeader";
+import TableHead from "../proposals/TableHead";
+import TableBody from "../proposals/TableBody";
+import TableFooter from "../proposals/TableFooter";
+import { proposalsTableData } from "../../../data/proposals-data";
 
-type Data = typeof bookingsTableData;
+type Data = typeof proposalsTableData;
 type SortKeys =
   | "id"
-  | "reference"
-  | "type"
-  | "status"
-  | "bookTime"
-  | "travelDate"
+  | "proposalNumber"
   | "name"
-  | "destinations"
-  | "totalAmount"
-  | "pendingAmount";
+  | "createdAt"
+  | "proposalName"
+  | "travelDate"
+  | "departureCity"
+  | "priceQuoted";
 type SortOrder = "asc" | "desc";
 
 const sortData = ({
@@ -33,14 +31,14 @@ const sortData = ({
 }) => {  
   if (!sortKey) return tableData;
 
-  const sortedData = bookingsTableData.sort((a, b) => {
-    if (sortKey === "id" || sortKey === "reference" || sortKey === "type" || sortKey === "status" 
-    || sortKey === "bookTime" || sortKey === "totalAmount" || sortKey === "pendingAmount") {
+  const sortedData = proposalsTableData.sort((a, b) => {
+    if (sortKey === "id" || sortKey === "proposalNumber"  || sortKey === "createdAt" 
+    || sortKey === "proposalName"   || sortKey==="priceQuoted") {
       return a[sortKey] > b[sortKey] ? 1 : -1;
     }
     if (
       sortKey === "name" ||      
-      sortKey === "destinations" ||      
+      sortKey === "departureCity" ||      
       sortKey === "travelDate"  
     ) {
       const objSortKey: "customerName" | "travelDetails" = sortKey === "name"
@@ -88,33 +86,31 @@ const SortIcon = ({
   );
 };
 
-const BookingsTable = () => {
-  const [bookings, setBookings] = useState<Data>(bookingsTableData);
+const ProposalsTable = () => {
+  const [bookings, setBookings] = useState<Data>(proposalsTableData);
   const [sortKey, setSortKey] = useState<SortKeys>("id");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
   const [searchValue, setSearchValue] = useState("");
   const columns: { key: SortKeys; label: string; sortable: boolean }[] = [
     { key: "id", label: "#", sortable: true },
-    { key: "reference", label: "Reference", sortable: true },
-    { key: "type", label: "Type", sortable: true },
-    { key: "status", label: "Status", sortable: true },
-    { key: "bookTime", label: "BookTime", sortable: true },
+    { key: "proposalNumber", label: "Proposal Number", sortable: true },
+    { key: "name", label: "Customer Name", sortable: true },
+    { key: "createdAt", label: "Created At", sortable: true },
+    { key: "proposalName", label: "Proposal Name", sortable: true },
     { key: "travelDate", label: "Travel Date", sortable: true },
-    { key: "name", label: "Name", sortable: true },    
-    { key: "destinations", label: "Destinations", sortable: true },
-    { key: "totalAmount", label: "Total Amount", sortable: true },
-    { key: "pendingAmount", label: "Pending Amount", sortable: true },
+    { key: "departureCity", label: "Departure City", sortable: true },
+    { key: "priceQuoted", label: "Price Quoted", sortable: true }
   ];
 
   const sortedData = useCallback(
     () =>
       sortData({
-        tableData: bookingsTableData,
+        tableData: proposalsTableData,
         sortKey,
         reverse: sortOrder === "desc",
       }),
-    [bookingsTableData, sortKey, sortOrder]
+    [proposalsTableData, sortKey, sortOrder]
   );
 
   const changeSort = (key: SortKeys) => {
@@ -157,4 +153,4 @@ const BookingsTable = () => {
   );
 };
 
-export default BookingsTable;
+export default ProposalsTable;

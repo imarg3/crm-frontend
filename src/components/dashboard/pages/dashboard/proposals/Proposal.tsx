@@ -1,9 +1,9 @@
+import ProposalsTable from "./ProposalTable";
+
 const Proposal = () => {
     return (
-        <div>
-            <h1>Proposal Page</h1>
-        </div>
-    )
+        <ProposalsTable />
+        );
 }
 
 export default Proposal;

@@ -4,6 +4,7 @@ type CustomerInfo = Pick<Customer, "name">
 type TravelDetailsInfo = Pick<TravelDetails, "departureCity" | "travelDate">
 
 export interface Proposal {
+    id:number,
     proposalNumber: number,
     customerName: CustomerInfo,
     createdAt: Date,
