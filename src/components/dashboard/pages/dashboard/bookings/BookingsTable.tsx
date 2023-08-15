@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback, MouseEventHandler } from "react";
+import { useState, useEffect, useCallback, MouseEventHandler, useMemo } from "react";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import api from "../../../../../api/axiosConfig";
-import TableHeader from "../bookings/TableHeader";
+import TableHeader from "../../../../../shared/table/TableHeader";
 import TableHead from "../bookings/TableHead";
 import TableBody from "../bookings/TableBody";
 import TableFooter from "../bookings/TableFooter";
@@ -22,6 +22,25 @@ type SortKeys =
   | "pendingAmount";
 type SortOrder = "asc" | "desc";
 
+const searchData = ({
+  tableData,
+  searchValue
+}: {
+  tableData: Data;
+  searchValue: string;
+}) => {
+  if (!searchValue) return tableData;
+
+  const filteredLeads = tableData.filter((value) => {    
+    return (
+      value?.reference?.toLowerCase().includes(searchValue?.toLowerCase()) || 
+      value?.customerName?.name?.toLowerCase().includes(searchValue?.toLowerCase()) ||
+      value?.travelDetails?.destinations?.toString().toLowerCase().includes(searchValue?.toLowerCase())
+    )
+  })
+  return filteredLeads;
+};
+
 const sortData = ({
   tableData,
   sortKey,
@@ -33,7 +52,7 @@ const sortData = ({
 }) => {  
   if (!sortKey) return tableData;
 
-  const sortedData = bookingsTableData.sort((a, b) => {
+  const sortedData = tableData.sort((a, b) => {
     if (sortKey === "id" || sortKey === "reference" || sortKey === "type" || sortKey === "status" 
     || sortKey === "bookTime" || sortKey === "totalAmount" || sortKey === "pendingAmount") {
       return a[sortKey] > b[sortKey] ? 1 : -1;
@@ -107,14 +126,23 @@ const BookingsTable = () => {
     { key: "pendingAmount", label: "Pending Amount", sortable: true },
   ];
 
+  const searchedData = useMemo(
+    () => 
+      searchData({
+        tableData: bookings,
+        searchValue,
+      }),
+    [bookings, searchValue]
+  );
+
   const sortedData = useCallback(
     () =>
       sortData({
-        tableData: bookingsTableData,
+        tableData: searchedData,
         sortKey,
         reverse: sortOrder === "desc",
       }),
-    [bookingsTableData, sortKey, sortOrder]
+    [searchedData, sortKey, sortOrder]
   );
 
   const changeSort = (key: SortKeys) => {
@@ -122,9 +150,8 @@ const BookingsTable = () => {
     setSortKey(key);
   };
 
-  const searchTable = (newSearchValue) => {
-    alert("search");
-    setSearchValue(newSearchValue);
+  const changeSearch = (searchValue: string) => {         
+    setSearchValue(searchValue);
   };
 
   /*
@@ -139,7 +166,7 @@ const BookingsTable = () => {
 
   return (
     <Card className="h-full w-full">
-      <TableHeader searchTable={searchTable} />
+      <TableHeader changeSearch={changeSearch} />
       <CardBody className="overflow-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <TableHead

@@ -1,12 +1,14 @@
-import { useState, useEffect, useCallback, MouseEventHandler } from "react";
+import { useState, useEffect, useCallback, MouseEventHandler, useMemo } from "react";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import api from "../../../../../api/axiosConfig";
-import TableHeader from "./TableHeader";
+import TableHeader from "../../../../../shared/table/TableHeader";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import TableFooter from "./TableFooter";
 import { leadsTableData } from "../../../data/leads-data";
+import { Lead } from "../../../../../model/interfaces/lead";
+import { Destination } from "../../../../../model/enums";
 
 type Data = typeof leadsTableData;
 type SortKeys =
@@ -22,6 +24,33 @@ type SortKeys =
   | "edit";
 type SortOrder = "asc" | "desc";
 
+const SortIcon = ({
+  sortOrder,
+  columnKey,
+  sortKey,
+  onClick,
+}: {
+  sortOrder: SortOrder;
+  columnKey: SortKeys;
+  sortKey: SortKeys;
+  onClick: MouseEventHandler;
+}) => {
+  const isDesc = sortKey === columnKey && sortOrder === "desc";
+  return (
+    <>
+      {isDesc ? (
+        <ChevronUpIcon strokeWidth={2} className="h-4 w-4" onClick={onClick} />
+      ) : (
+        <ChevronDownIcon
+          strokeWidth={2}
+          className="h-4 w-4"
+          onClick={onClick}
+        />
+      )}
+    </>
+  );
+};
+
 const sortData = ({
   tableData,
   sortKey,
@@ -30,10 +59,10 @@ const sortData = ({
   tableData: Data;
   sortKey: SortKeys;
   reverse: boolean;
-}) => {  
+}) => {
   if (!sortKey) return tableData;
 
-  const sortedData = leadsTableData.sort((a, b) => {
+  const sortedData = tableData.sort((a, b) => {
     if (sortKey === "id" || sortKey === "createdDate" || sortKey === "status") {
       return a[sortKey] > b[sortKey] ? 1 : -1;
     }
@@ -64,31 +93,24 @@ const sortData = ({
   return sortedData;
 };
 
-const SortIcon = ({
-  sortOrder,
-  columnKey,
-  sortKey,
-  onClick,
+const searchData = ({
+  tableData,
+  searchValue
 }: {
-  sortOrder: SortOrder;
-  columnKey: SortKeys;
-  sortKey: SortKeys;
-  onClick: MouseEventHandler;
+  tableData: Data;
+  searchValue: string;
 }) => {
-  const isDesc = sortKey === columnKey && sortOrder === "desc";
-  return (
-    <>
-      {isDesc ? (
-        <ChevronUpIcon strokeWidth={2} className="h-4 w-4" onClick={onClick} />
-      ) : (
-        <ChevronDownIcon
-          strokeWidth={2}
-          className="h-4 w-4"
-          onClick={onClick}
-        />
-      )}
-    </>
-  );
+  if (!searchValue) return tableData;
+
+  const filteredLeads = tableData.filter((value) => {    
+    return (
+      value?.customerInfo?.name?.toLowerCase().includes(searchValue?.toLowerCase()) ||
+      value?.customerInfo?.mobile?.toLowerCase().includes(searchValue?.toLowerCase()) || 
+      value?.travelDetailsInfo?.destinations?.toString().toLowerCase().includes(searchValue?.toLowerCase()) || 
+      value?.travelDetailsInfo?.departureCity?.toLowerCase().includes(searchValue?.toLowerCase())
+    )
+  })
+  return filteredLeads;
 };
 
 const LeadsTable = () => {
@@ -110,24 +132,32 @@ const LeadsTable = () => {
     { key: "edit", label: "", sortable: false },
   ];
 
-  const sortedData = useCallback(
-    () =>
+  const searchedData = useMemo(
+    () => 
+      searchData({
+        tableData: leads,
+        searchValue,
+      }),
+    [leads, searchValue]
+  );
+
+  const sortedData = useMemo(
+    () => 
       sortData({
-        tableData: leadsTableData,
+        tableData: searchedData,
         sortKey,
         reverse: sortOrder === "desc",
       }),
-    [leadsTableData, sortKey, sortOrder]
+    [searchedData, sortKey, sortOrder]
   );
 
   const changeSort = (key: SortKeys) => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    setSortKey(key);
+    setSortKey(key);    
   };
 
-  const searchTable = (newSearchValue) => {
-    alert("search");
-    setSearchValue(newSearchValue);
+  const changeSearch = (searchValue: string) => {         
+    setSearchValue(searchValue);
   };
 
   /*
@@ -142,7 +172,7 @@ const LeadsTable = () => {
 
   return (
     <Card className="h-full w-full">
-      <TableHeader searchTable={searchTable} />
+      <TableHeader changeSearch={changeSearch} />
       <CardBody className="overflow-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <TableHead
@@ -152,7 +182,7 @@ const LeadsTable = () => {
             sortOrder={sortOrder}
             sortKey={sortKey}
           />
-          <TableBody data={sortedData()} />
+          <TableBody data={sortedData} />
         </table>
       </CardBody>
       <TableFooter />

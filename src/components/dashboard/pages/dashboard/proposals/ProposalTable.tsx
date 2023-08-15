@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback, MouseEventHandler } from "react";
+import { useState, useEffect, useCallback, MouseEventHandler, useMemo } from "react";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import api from "../../../../../api/axiosConfig";
-import TableHeader from "../proposals/TableHeader";
+import TableHeader from "../../../../../shared/table/TableHeader";
 import TableHead from "../proposals/TableHead";
 import TableBody from "../proposals/TableBody";
 import TableFooter from "../proposals/TableFooter";
@@ -20,6 +20,24 @@ type SortKeys =
   | "priceQuoted";
 type SortOrder = "asc" | "desc";
 
+const searchData = ({
+  tableData,
+  searchValue
+}: {
+  tableData: Data;
+  searchValue: string;
+}) => {
+  if (!searchValue) return tableData;
+
+  const filteredLeads = tableData.filter((value) => {    
+    return (
+      value?.proposalName?.toLowerCase().includes(searchValue?.toLowerCase()) || 
+      value?.travelDetails?.departureCity?.toLowerCase().includes(searchValue?.toLowerCase())
+    )
+  })
+  return filteredLeads;
+};
+
 const sortData = ({
   tableData,
   sortKey,
@@ -31,7 +49,7 @@ const sortData = ({
 }) => {  
   if (!sortKey) return tableData;
 
-  const sortedData = proposalsTableData.sort((a, b) => {
+  const sortedData = tableData.sort((a, b) => {
     if (sortKey === "id" || sortKey === "proposalNumber"  || sortKey === "createdAt" 
     || sortKey === "proposalName"   || sortKey==="priceQuoted") {
       return a[sortKey] > b[sortKey] ? 1 : -1;
@@ -87,7 +105,7 @@ const SortIcon = ({
 };
 
 const ProposalsTable = () => {
-  const [bookings, setBookings] = useState<Data>(proposalsTableData);
+  const [proposals, setProposals] = useState<Data>(proposalsTableData);
   const [sortKey, setSortKey] = useState<SortKeys>("id");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
@@ -103,14 +121,23 @@ const ProposalsTable = () => {
     { key: "priceQuoted", label: "Price Quoted", sortable: true }
   ];
 
+  const searchedData = useMemo(
+    () => 
+      searchData({
+        tableData: proposals,
+        searchValue,
+      }),
+    [proposals, searchValue]
+  );
+
   const sortedData = useCallback(
     () =>
       sortData({
-        tableData: proposalsTableData,
+        tableData: searchedData,
         sortKey,
         reverse: sortOrder === "desc",
       }),
-    [proposalsTableData, sortKey, sortOrder]
+    [searchedData, sortKey, sortOrder]
   );
 
   const changeSort = (key: SortKeys) => {
@@ -118,9 +145,8 @@ const ProposalsTable = () => {
     setSortKey(key);
   };
 
-  const searchTable = (newSearchValue) => {
-    alert("search");
-    setSearchValue(newSearchValue);
+  const changeSearch = (searchValue: string) => {         
+    setSearchValue(searchValue);
   };
 
   /*
@@ -135,7 +161,7 @@ const ProposalsTable = () => {
 
   return (
     <Card className="h-full w-full">
-      <TableHeader searchTable={searchTable} />
+      <TableHeader changeSearch={changeSearch} />
       <CardBody className="overflow-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <TableHead
