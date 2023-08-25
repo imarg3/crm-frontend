@@ -13,7 +13,7 @@ import {
   setSidenavColor,
   setSidenavType,
   setFixedNavbar,
-} from "../../context";
+} from "../../../../context";
 
 function formatNumber(number, decPlaces) {
   decPlaces = Math.pow(10, decPlaces);
@@ -147,10 +147,7 @@ export function Configurator() {
           </div>
           <hr />
           <div className="my-8 flex flex-col gap-4">
-            <a
-              href="/"
-              target="_black"
-            >
+            <a href="/" target="_black">
               <Button variant="gradient" fullWidth>
                 Free Download
               </Button>
@@ -171,8 +168,8 @@ export function Configurator() {
                 Material Tailwind PRO
               </Button>
             </a>
-          </div>          
-        </div>        
+          </div>
+        </div>
       </div>
     </aside>
   );

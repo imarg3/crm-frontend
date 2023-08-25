@@ -3,9 +3,10 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { animateScroll } from "react-scroll";
-import Home from "./components/main/Home";
-import { Dashboard } from "./components/dashboard/views/Dashboard";
+import Home from "./pages/home/Home";
+import { Dashboard } from "./pages/dashboard/Dashboard";
 import { useEffect } from "react";
+import { SignIn, SignUp } from "./pages/auth";
 
 function App() {
   const directory = useLocation();
@@ -16,14 +17,16 @@ function App() {
   }, [directory.pathname]);
 
   return (
-    <div className="w-full bg-white text-gray-950 font-poppins">      
+    <div className="w-full bg-white text-gray-950 font-poppins">
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
         <Route path="/dashboard/*" element={<Dashboard />} />
         <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>      
+      </Routes>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

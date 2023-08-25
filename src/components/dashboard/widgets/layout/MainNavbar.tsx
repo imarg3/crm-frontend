@@ -27,9 +27,9 @@ import {
   Bars2Icon,
 } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
-import { Leads } from "../../pages/dashboard/";
-import Proposal from "../../pages/dashboard/proposals/Proposal";
-import Booking from "../../pages/dashboard/bookings/Booking";
+import { Leads } from "../../../../pages/dashboard";
+import Proposal from "../../../../pages/dashboard/proposals/Proposal";
+import Booking from "../../../../pages/dashboard/bookings/Booking";
 
 // profile menu component
 const profileMenuItems = [
