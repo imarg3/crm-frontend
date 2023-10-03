@@ -11,8 +11,30 @@ import {
   Select,
   Option,
 } from "@material-tailwind/react";
+import { useState } from "react";
+import axios from "../../api/axiosConfig";
 
 export function SignIn() {
+  const onSignIn = () => {
+    console.log("sign-in");
+    axios.post('api/v1/auth/sign-in', {
+      usernameOrEmail:email,
+      password:password
+    },{
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+
   return (
     <>
       <img
@@ -36,14 +58,14 @@ export function SignIn() {
               <Option>Admin Login</Option>
               <Option>Agent Login</Option>
             </Select>
-            <Input type="email" label="Email" size="lg" />
-            <Input type="password" label="Password" size="lg" />
+            <Input type="email" label="Email" size="lg" value={email} onChange={(event) => setEmail(event.target.value)}/>
+            <Input type="password" label="Password" size="lg"  value={password} onChange={(event) => setPassword(event.target.value)}/>
             <div className="-ml-2.5">
               <Checkbox label="Remember Me" />
             </div>
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" fullWidth>
+            <Button variant="gradient" fullWidth onClick={onSignIn}>
               Sign In
             </Button>
             <Typography variant="small" className="mt-6 flex justify-center">
