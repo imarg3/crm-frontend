@@ -17,11 +17,49 @@ import PhoneInput, {
   isValidPhoneNumber,
 } from "react-phone-number-input";
 import { CityStateCountrySelect } from "./csc";
+import axios from "../../api/axiosConfig";
 // Latest version - v3.0.0 with Tree Shaking to reduce bundle size
 
 export function SignUp() {
-  const [mobile, setMobileNumber] = useState("");
+  const [formData, setFormData] = useState({
+    fullName: "",
+    businessName: "",
+    password: "",
+    matchingPassword: "",
+    email: "",
+    country: "",
+    state:"",
+    city:"",
+    mobile: "",
+  });
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  const onMobileChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      mobile:value,
+    }));
+  }
+  const onSignUp = () => {
+    axios.post('api/v1/auth/sign-up', formData,
+    {
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
   return (
     <>
       <img
@@ -34,28 +72,30 @@ export function SignUp() {
           <CardHeader
             variant="gradient"
             color="blue"
-            className="mb-4 grid h-28 place-items-center"
+            className="mb-4 grid h-20 place-items-center"
           >
             <Typography variant="h3" color="white">
               Sign Up
             </Typography>
           </CardHeader>
           <CardBody className="flex flex-col gap-4">
-            <Input label="Your Name" size="lg" />
-            <Input label="Business Name" size="lg" />
-            <Input type="email" label="Email" size="lg" />
+            <Input name="fullName" label="Your Name" size="lg" value={formData.fullName} onChange={handleChange}/>
+            <Input name="businessName" label="Business Name" size="lg" value={formData.businessName} onChange={handleChange}/>
+            <Input name="email" type="email" label="Email" size="lg" value={formData.email} onChange={handleChange}/>
+            <Input name="password" label="Password" size="lg" value={formData.password} onChange={handleChange}/>
+            <Input name="matchingPassword" label="Confirm Password" size="lg" value={formData.matchingPassword} onChange={handleChange}/>
             <div className="relative w-full min-w-[200px] h-11">
               <PhoneInput
                 className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-3 rounded-md border-blue-gray-200 focus:border-blue-500"
                 defaultCountry="IN"
-                value={mobile}
-                onChange={setMobileNumber}
+                value={formData.mobile}
+                onChange={onMobileChange}
                 error={
-                  mobile
-                    ? isValidPhoneNumber(mobile)
+                  formData.mobile
+                    ? isValidPhoneNumber(formData.mobile)
                       ? undefined
                       : "Invalid phone number"
-                    : "Phone number required"
+                    :"Phone number required"
                 }
                 size="lg"
               />
@@ -63,16 +103,16 @@ export function SignUp() {
                 Mobile Number
               </label>
             </div>
-            <CityStateCountrySelect />
+            <CityStateCountrySelect functions={[formData,setFormData]} />
             <div className="-ml-2.5">
               <Checkbox label="I agree the Terms and Conditions" />
             </div>
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" fullWidth>
+            <Button variant="gradient" fullWidth onClick={onSignUp}>
               Sign Up
             </Button>
-            <Typography variant="small" className="mt-6 flex justify-center">
+            <Typography variant="small" className="mt-4 flex justify-center">
               Already have an account?
               <Link to="/sign-in">
                 <Typography
