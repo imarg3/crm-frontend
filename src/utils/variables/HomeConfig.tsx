@@ -132,7 +132,7 @@ export const TestimonialTexts = {
       location: "Lahore, Pakistan",
     },
     {
-      text: "BlueTick was great with the entire process from planning to updates during the trip. We had 11 people and everything was perfectly executed. We appreciate all of her hard work. It was truly the trip of a lifetime. Thank you!",
+      text: "CRM was great with the entire process from planning to updates during the trip. We had 11 people and everything was perfectly executed. We appreciate all of her hard work. It was truly the trip of a lifetime. Thank you!",
       person: "Gina",
       location: "Owerri, Nigeria",
     },
@@ -151,7 +151,7 @@ export const TestimonialTexts = {
 
 export const NewsletterTexts = {
   firstText:
-    "Subscribe to get information, latest news and other interesting offers about BlueTick.",
+    "Subscribe to get information, latest news and other interesting offers about CRM.",
   placeholderText: "Your email",
   buttonText: "Subscribe",
 };

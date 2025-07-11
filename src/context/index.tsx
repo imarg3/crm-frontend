@@ -1,10 +1,39 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { ReactNode } from "react";
 
-export const MaterialTailwind = React.createContext(null);
+// Define the state interface
+interface MaterialTailwindState {
+  openSidenav: boolean;
+  sidenavColor: string;
+  sidenavType: string;
+  transparentNavbar: boolean;
+  fixedNavbar: boolean;
+  openConfigurator: boolean;
+}
+
+// Define action types
+type MaterialTailwindAction =
+  | { type: "OPEN_SIDENAV"; value: boolean }
+  | { type: "SIDENAV_TYPE"; value: string }
+  | { type: "SIDENAV_COLOR"; value: string }
+  | { type: "TRANSPARENT_NAVBAR"; value: boolean }
+  | { type: "FIXED_NAVBAR"; value: boolean }
+  | { type: "OPEN_CONFIGURATOR"; value: boolean };
+
+// Define the context type
+type MaterialTailwindContextType = [
+  MaterialTailwindState,
+  React.Dispatch<MaterialTailwindAction>
+];
+
+// Define provider props
+interface MaterialTailwindControllerProviderProps {
+  children: ReactNode;
+}
+
+export const MaterialTailwind = React.createContext<MaterialTailwindContextType | null>(null);
 MaterialTailwind.displayName = "MaterialTailwindContext";
 
-export function reducer(state, action) {
+export function reducer(state: MaterialTailwindState, action: MaterialTailwindAction): MaterialTailwindState {
   switch (action.type) {
     case "OPEN_SIDENAV": {
       return { ...state, openSidenav: action.value };
@@ -25,13 +54,13 @@ export function reducer(state, action) {
       return { ...state, openConfigurator: action.value };
     }
     default: {
-      throw new Error(`Unhandled action type: ${action.type}`);
+      return state;
     }
   }
 }
 
-export function MaterialTailwindControllerProvider({ children }) {
-  const initialState = {
+export function MaterialTailwindControllerProvider({ children }: MaterialTailwindControllerProviderProps) {
+  const initialState: MaterialTailwindState = {
     openSidenav: false,
     sidenavColor: "blue",
     sidenavType: "dark",
@@ -42,7 +71,7 @@ export function MaterialTailwindControllerProvider({ children }) {
 
   const [controller, dispatch] = React.useReducer(reducer, initialState);
   const value = React.useMemo(
-    () => [controller, dispatch],
+    () => [controller, dispatch] as MaterialTailwindContextType,
     [controller, dispatch]
   );
 
@@ -53,7 +82,7 @@ export function MaterialTailwindControllerProvider({ children }) {
   );
 }
 
-export function useMaterialTailwindController() {
+export function useMaterialTailwindController(): MaterialTailwindContextType {
   const context = React.useContext(MaterialTailwind);
 
   if (!context) {
@@ -65,21 +94,23 @@ export function useMaterialTailwindController() {
   return context;
 }
 
-MaterialTailwindControllerProvider.displayName = "/src/context/index.jsx";
+MaterialTailwindControllerProvider.displayName = "/src/context/index.tsx";
 
-MaterialTailwindControllerProvider.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-export const setOpenSidenav = (dispatch, value) =>
+// Action creators with proper typing
+export const setOpenSidenav = (dispatch: React.Dispatch<MaterialTailwindAction>, value: boolean) =>
   dispatch({ type: "OPEN_SIDENAV", value });
-export const setSidenavType = (dispatch, value) =>
+
+export const setSidenavType = (dispatch: React.Dispatch<MaterialTailwindAction>, value: string) =>
   dispatch({ type: "SIDENAV_TYPE", value });
-export const setSidenavColor = (dispatch, value) =>
+
+export const setSidenavColor = (dispatch: React.Dispatch<MaterialTailwindAction>, value: string) =>
   dispatch({ type: "SIDENAV_COLOR", value });
-export const setTransparentNavbar = (dispatch, value) =>
+
+export const setTransparentNavbar = (dispatch: React.Dispatch<MaterialTailwindAction>, value: boolean) =>
   dispatch({ type: "TRANSPARENT_NAVBAR", value });
-export const setFixedNavbar = (dispatch, value) =>
+
+export const setFixedNavbar = (dispatch: React.Dispatch<MaterialTailwindAction>, value: boolean) =>
   dispatch({ type: "FIXED_NAVBAR", value });
-export const setOpenConfigurator = (dispatch, value) =>
+
+export const setOpenConfigurator = (dispatch: React.Dispatch<MaterialTailwindAction>, value: boolean) =>
   dispatch({ type: "OPEN_CONFIGURATOR", value });

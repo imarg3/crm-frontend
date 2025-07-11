@@ -7,14 +7,14 @@ import {
 } from "react";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
-import api from "../../../api/axiosConfig";
-import TableHeader from "../../../utils/table/TableHeader";
+import api from "../../api/axiosConfig";
+import TableHeader from "../../utils/table/TableHeader";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import TableFooter from "./TableFooter";
-import { leadsTableData } from "../../../utils/data/leads-data";
-import { Lead } from "../../../model/interfaces/lead";
-import { Destination } from "../../../model/enums";
+import { leadsTableData } from "../../utils/data/leads-data";
+import { Lead } from "../../model/interfaces/lead";
+import { Destination } from "../../model/enums";
 
 type Data = typeof leadsTableData;
 type SortKeys =

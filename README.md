@@ -1,6 +1,6 @@
-# Bluetick Travel Agency Landing Page
+# CRM Travel Agency Landing Page
 
-This project is a landing page for Bluetick Travel Agency built using React, TypeScript, and Vite.
+This project is a landing page for CRM Travel Agency built using React, TypeScript, and Vite.
 
 ## Features
 
@@ -8,7 +8,14 @@ This project is a landing page for Bluetick Travel Agency built using React, Typ
 - Responsive layout for various screen sizes
 - Smooth scrolling navigation
 - Interactive components and animations
-- Information about Bluetick Travel Agency services
+- Information about CRM Travel Agency services
+
+## Tech Stack
+
+- React 18 + Vite (blazing fast builds)
+- Material Tailwind (flexible and pretty UI)
+- TypeScript (type safety = maintainability)
+- Vitest + Testing Library (great testing setup)
 
 ## Technologies Used
 
@@ -34,13 +41,13 @@ This project is a landing page for Bluetick Travel Agency built using React, Typ
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/imarg3/bluetick-frontend.git
+   git clone https://github.com/imarg3/crm-frontend.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd bluetick-frontend
+   cd crm-frontend
    ```
 
 3. Install the dependencies:
@@ -84,14 +91,14 @@ The project structure follows a standard React application structure:
 
 ## Deployment
 
-To deploy the Bluetick Travel Agency landing page, you can follow the deployment instructions specific to your chosen hosting platform (e.g., Netlify, Vercel, GitHub Pages, etc.). Typically, you need to build the project and configure the hosting platform to serve the generated files.
+To deploy the CRM Travel Agency landing page, you can follow the deployment instructions specific to your chosen hosting platform (e.g., Netlify, Vercel, GitHub Pages, etc.). Typically, you need to build the project and configure the hosting platform to serve the generated files.
 
 ## Credits
 
-This project was developed by [Arpit Gupta](https://github.com/imarg3). It was created as a sample landing page for a travel agency based on the Bluetick brand.
+This project was developed by [Arpit Gupta](https://github.com/imarg3). It was created as a sample landing page for a travel agency based on the CRM brand.
 
 ## Demo
 
-[View Project](https://bluetick.com)
+[View Project](https://github.com)
 
-Feel free to explore the code, customize it, and use it as a foundation for your own projects. Happy traveling with Bluetick Travel Agency!
+Feel free to explore the code, customize it, and use it as a foundation for your own projects. Happy traveling with CRM Travel Agency!

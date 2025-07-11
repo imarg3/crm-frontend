@@ -7,23 +7,25 @@ import {
 } from "react";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
-import api from "../../../api/axiosConfig";
-import TableHeader from "../../../utils/table/TableHeader";
+import api from "../../api/axiosConfig";
+import TableHeader from "../../utils/table/TableHeader";
 import TableHead from "./TableHead";
 import TableBody from "./TableBody";
 import TableFooter from "./TableFooter";
-import { proposalsTableData } from "../../../utils/data/proposals-data";
+import { bookingsTableData } from "../../utils/data/bookings-data";
 
-type Data = typeof proposalsTableData;
+type Data = typeof bookingsTableData;
 type SortKeys =
   | "id"
-  | "proposalNumber"
-  | "name"
-  | "createdAt"
-  | "proposalName"
+  | "reference"
+  | "type"
+  | "status"
+  | "bookTime"
   | "travelDate"
-  | "departureCity"
-  | "priceQuoted";
+  | "name"
+  | "destinations"
+  | "totalAmount"
+  | "pendingAmount";
 type SortOrder = "asc" | "desc";
 
 const searchData = ({
@@ -37,9 +39,13 @@ const searchData = ({
 
   const filteredLeads = tableData.filter((value) => {
     return (
-      value?.proposalName?.toLowerCase().includes(searchValue?.toLowerCase()) ||
-      value?.travelDetails?.departureCity
+      value?.reference?.toLowerCase().includes(searchValue?.toLowerCase()) ||
+      value?.customerName?.name
         ?.toLowerCase()
+        .includes(searchValue?.toLowerCase()) ||
+      value?.travelDetails?.destinations
+        ?.toString()
+        .toLowerCase()
         .includes(searchValue?.toLowerCase())
     );
   });
@@ -60,16 +66,18 @@ const sortData = ({
   const sortedData = tableData.sort((a, b) => {
     if (
       sortKey === "id" ||
-      sortKey === "proposalNumber" ||
-      sortKey === "createdAt" ||
-      sortKey === "proposalName" ||
-      sortKey === "priceQuoted"
+      sortKey === "reference" ||
+      sortKey === "type" ||
+      sortKey === "status" ||
+      sortKey === "bookTime" ||
+      sortKey === "totalAmount" ||
+      sortKey === "pendingAmount"
     ) {
       return a[sortKey] > b[sortKey] ? 1 : -1;
     }
     if (
       sortKey === "name" ||
-      sortKey === "departureCity" ||
+      sortKey === "destinations" ||
       sortKey === "travelDate"
     ) {
       const objSortKey: "customerName" | "travelDetails" =
@@ -116,30 +124,32 @@ const SortIcon = ({
   );
 };
 
-const ProposalsTable = () => {
-  const [proposals, setProposals] = useState<Data>(proposalsTableData);
+const BookingsTable = () => {
+  const [bookings, setBookings] = useState<Data>(bookingsTableData);
   const [sortKey, setSortKey] = useState<SortKeys>("id");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
   const [searchValue, setSearchValue] = useState("");
   const columns: { key: SortKeys; label: string; sortable: boolean }[] = [
     { key: "id", label: "#", sortable: true },
-    { key: "proposalNumber", label: "Proposal Number", sortable: true },
-    { key: "name", label: "Customer Name", sortable: true },
-    { key: "createdAt", label: "Created At", sortable: true },
-    { key: "proposalName", label: "Proposal Name", sortable: true },
+    { key: "reference", label: "Reference", sortable: true },
+    { key: "type", label: "Type", sortable: true },
+    { key: "status", label: "Status", sortable: true },
+    { key: "bookTime", label: "BookTime", sortable: true },
     { key: "travelDate", label: "Travel Date", sortable: true },
-    { key: "departureCity", label: "Departure City", sortable: true },
-    { key: "priceQuoted", label: "Price Quoted", sortable: true },
+    { key: "name", label: "Name", sortable: true },
+    { key: "destinations", label: "Destinations", sortable: true },
+    { key: "totalAmount", label: "Total Amount", sortable: true },
+    { key: "pendingAmount", label: "Pending Amount", sortable: true },
   ];
 
   const searchedData = useMemo(
     () =>
       searchData({
-        tableData: proposals,
+        tableData: bookings,
         searchValue,
       }),
-    [proposals, searchValue]
+    [bookings, searchValue]
   );
 
   const sortedData = useCallback(
@@ -191,4 +201,4 @@ const ProposalsTable = () => {
   );
 };
 
-export default ProposalsTable;
+export default BookingsTable;

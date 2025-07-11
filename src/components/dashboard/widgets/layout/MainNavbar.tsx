@@ -23,13 +23,12 @@ import {
   InboxArrowDownIcon,
   LifebuoyIcon,
   PowerIcon,
-  RocketLaunchIcon,
   Bars2Icon,
 } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
-import { Leads } from "../../../../pages/dashboard";
-import Proposal from "../../../../pages/dashboard/proposals/Proposal";
-import Booking from "../../../../pages/dashboard/bookings/Booking";
+import { Leads } from "../../../../features/leads/Leads";
+import Proposal from "../../../../features/proposals/Proposal";
+import Booking from "../../../../features/bookings/Booking";
 
 // profile menu component
 const profileMenuItems = [
@@ -245,7 +244,7 @@ export function MainNavbar() {
           href="#"
           className="mr-4 ml-2 cursor-pointer py-1.5 font-medium"
         >
-          BlueTick DMC
+          CRM DMC
         </Typography>
         <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
           <NavList />

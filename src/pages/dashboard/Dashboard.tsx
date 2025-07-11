@@ -7,7 +7,7 @@ import {
   Configurator,
   Footer,
 } from "../../components/dashboard/widgets/layout";
-import routes from "../../utils/variables/routes";
+import routes from "../../routes/dashboardRoutes";
 import {
   useMaterialTailwindController,
   setOpenConfigurator,

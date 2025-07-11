@@ -13,7 +13,7 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-const baseUrl = "https://bluetick.com";
+const baseUrl = "https://github.com";
 
 export const WelcomeEmail = () => (
   <Html>

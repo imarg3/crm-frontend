@@ -117,7 +117,7 @@ const Footer = () => {
         </div>
       </section>
       <Text className="text-center bg-color4 text-white text-xs py-6 font-light">
-        Copyright 2023. bluetick.com. All rights reserved.
+        Copyright 2025. crm.com. All rights reserved.
       </Text>
     </footer>
   );
