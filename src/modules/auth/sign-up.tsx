@@ -18,6 +18,7 @@ import PhoneInput, {
 } from "react-phone-number-input";
 import { CityStateCountrySelect } from "./csc";
 import axios from "../../api/axiosConfig";
+import { toast } from 'react-toastify';
 // Latest version - v3.0.0 with Tree Shaking to reduce bundle size
 
 export function SignUp() {
@@ -28,38 +29,114 @@ export function SignUp() {
     matchingPassword: "",
     email: "",
     country: "",
-    state:"",
-    city:"",
+    state: "",
+    city: "",
     mobile: "",
+    agreeToTerms: false,
   });
 
-  const handleChange = (event) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
-  const onMobileChange = (value) => {
+
+  const onMobileChange = (value: string | undefined) => {
     setFormData((prevData) => ({
       ...prevData,
-      mobile:value,
+      mobile: value || "",
     }));
-  }
-  const onSignUp = () => {
-    axios.post('api/v1/auth/sign-up', formData,
-    {
-      headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+  };
+  const onSignUp = async () => {
+    // Basic validation
+    if (!formData.agreeToTerms) {
+      toast.error("You must agree to the Terms and Conditions.");
+      return;
+    }
+
+    if (formData.password !== formData.matchingPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
+    if (!formData.fullName.trim()) {
+      toast.error("Please enter your full name.");
+      return;
+    }
+
+    if (!formData.email.trim()) {
+      toast.error("Please enter your email address.");
+      return;
+    }
+
+    if (!formData.password.trim()) {
+      toast.error("Please enter a password.");
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast.error("Password must be at least 6 characters long.");
+      return;
+    }
+
+    // Validate phone number if provided
+    if (formData.mobile && !isValidPhoneNumber(formData.mobile)) {
+      toast.error("Please enter a valid phone number.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post("api/v1/auth/sign-up", formData);
+      
+      if (response.status === 201) {
+        toast.success("Registration successful! Redirecting to sign in...");
+        
+        // Reset form
+        setFormData({
+          fullName: "",
+          businessName: "",
+          password: "",
+          matchingPassword: "",
+          email: "",
+          country: "",
+          state: "",
+          city: "",
+          mobile: "",
+          agreeToTerms: false,
+        });
+
+        // Redirect after success
+        setTimeout(() => {
+          window.location.href = "/sign-in";
+        }, 2000);
       }
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
+    } catch (error: any) {
+      console.error('Sign-up error:', error);
+      
+      const apiMsg = error.response?.data?.message || 
+                    error.response?.data?.error || 
+                    "Registration failed. Please try again.";
+      
+      if (error.response?.status === 400) {
+        toast.error(apiMsg || "Please check your input and try again.");
+      } else if (error.response?.status === 409) {
+        toast.error("An account with this email already exists.");
+      } else if (error.response?.status >= 500) {
+        toast.error("Server error. Please try again later.");
+      } else {
+        toast.error(apiMsg);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <>
       <img
@@ -79,13 +156,62 @@ export function SignUp() {
             </Typography>
           </CardHeader>
           <CardBody className="flex flex-col gap-4">
-            <Input name="fullName" label="Your Name" size="lg" value={formData.fullName} onChange={handleChange}/>
-            <Input name="businessName" label="Business Name" size="lg" value={formData.businessName} onChange={handleChange}/>
-            <Input name="email" type="email" label="Email" size="lg" value={formData.email} onChange={handleChange}/>
-            <Input name="password" label="Password" size="lg" value={formData.password} onChange={handleChange}/>
-            <Input name="matchingPassword" label="Confirm Password" size="lg" value={formData.matchingPassword} onChange={handleChange}/>
+            <Input
+              name="fullName"
+              label="Your Name"
+              size="lg"
+              value={formData.fullName}
+              onChange={handleChange}
+              autoComplete="name"
+            />
+            <Input
+              name="businessName"
+              label="Business Name"
+              size="lg"
+              value={formData.businessName}
+              onChange={handleChange}
+              autoComplete="organization"
+            />
+            <Input
+              name="email"
+              type="email"
+              label="Email"
+              size="lg"
+              value={formData.email}
+              onChange={handleChange}
+              autoComplete="email"
+            />
+            <Input
+              name="password"
+              type={showPassword ? "text" : "password"}
+              label="Password"
+              size="lg"
+              value={formData.password}
+              onChange={handleChange}
+              autoComplete="new-password"
+            />
+            <Input
+              name="matchingPassword"
+              type={showPassword ? "text" : "password"}
+              label="Confirm Password"
+              size="lg"
+              value={formData.matchingPassword}
+              onChange={handleChange}
+              autoComplete="off" // Best to disable for confirm password
+            />
+            <div className="text-right">
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="text-sm text-blue-500 hover:underline mt-1"
+              >
+                {showPassword ? "Hide Password" : "Show Password"}
+              </button>
+            </div>
+
             <div className="relative w-full min-w-[200px] h-11">
               <PhoneInput
+                autoComplete="tel"
                 className="peer w-full h-full bg-transparent text-blue-gray-700 font-sans font-normal outline outline-0 focus:outline-0 disabled:bg-blue-gray-50 disabled:border-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 border focus:border-2 border-t-transparent focus:border-t-transparent text-sm px-3 py-3 rounded-md border-blue-gray-200 focus:border-blue-500"
                 defaultCountry="IN"
                 value={formData.mobile}
@@ -95,7 +221,7 @@ export function SignUp() {
                     ? isValidPhoneNumber(formData.mobile)
                       ? undefined
                       : "Invalid phone number"
-                    :"Phone number required"
+                    : "Phone number required"
                 }
                 size="lg"
               />
@@ -103,14 +229,28 @@ export function SignUp() {
                 Mobile Number
               </label>
             </div>
-            <CityStateCountrySelect functions={[formData,setFormData]} />
+            <CityStateCountrySelect functions={[formData, setFormData]} />
             <div className="-ml-2.5">
-              <Checkbox label="I agree the Terms and Conditions" />
+              <Checkbox
+                label="I agree the Terms and Conditions"
+                checked={formData.agreeToTerms}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    agreeToTerms: e.target.checked,
+                  }))
+                }
+              />
             </div>
           </CardBody>
           <CardFooter className="pt-0">
-            <Button variant="gradient" fullWidth onClick={onSignUp}>
-              Sign Up
+            <Button 
+              variant="gradient" 
+              fullWidth 
+              onClick={onSignUp}
+              disabled={isLoading}
+            >
+              {isLoading ? "Creating Account..." : "Sign Up"}
             </Button>
             <Typography variant="small" className="mt-4 flex justify-center">
               Already have an account?

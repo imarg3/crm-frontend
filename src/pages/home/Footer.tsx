@@ -16,7 +16,7 @@ const Footer = () => {
     <footer className="w-full flex flex-col bg-white">
       <section className="w-full h-auto grid lg:grid-cols-5 md:grid-cols-3 lg:px-20 md:px-12 px-6 py-16 gap-7 md:gap-4 lg:gap-0">
         <div className="flex flex-col items-start gap-4">
-          <Image className="w-28" image={logo} alt="Logo" as="a" href="/" />
+          <Image className="h-28 w-auto object-contain" image={logo} alt="Logo" as="a" href="/" />
           <Text className="text-sm text-color4" as="p">
             {FooterTexts.underLogoText}
           </Text>
@@ -117,7 +117,7 @@ const Footer = () => {
         </div>
       </section>
       <Text className="text-center bg-color4 text-white text-xs py-6 font-light">
-        Copyright 2025. crm.com. All rights reserved.
+        Copyright 2025. www.crm.com. All rights reserved.
       </Text>
     </footer>
   );

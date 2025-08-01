@@ -7,81 +7,88 @@ import {
   Input,
   Checkbox,
   Button,
-  Typography
+  Typography,
 } from "@material-tailwind/react";
 import { FormEvent, useState } from "react";
 import axios from "../../api/axiosConfig";
 import { Role } from "../../model/enums";
 import { useAuth } from "../../context/AuthProvider";
+import { toast } from 'react-toastify';
+import { getRedirectPath } from '../../utils/auth/roleNavigation';
 
 export function SignIn() {
   const navigate = useNavigate();
   const { signIn } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errMsg, setErrMsg] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const loginAPI = "api/v1/auth/sign-in";
   const formDataJSON = {
     usernameOrEmail: email,
-    password: password
+    password: password,
   };
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setIsLoading(true);
-    setErrMsg("");
 
     try {
-      const response = await axios.post(loginAPI, formDataJSON, {
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      });
-      
-      const accessToken = response?.data?.token;
+      const response = await axios.post(loginAPI, formDataJSON);
+
+      const data = response?.data?.data;
+      const accessToken = data?.token;
+      const emailFromResponse = data?.email;
+      const roles: string[] = data?.roles || [];
+
       if (!accessToken) {
-        setErrMsg("Unable to login. Please try after some time.");
+        toast.error("Unable to login. Please try after some time.");
         return;
       }
 
-      const roles: string[] = response?.data?.roles;
-      const userData = response?.data?.user;
-      
       // Create user object with proper typing
       const user = {
-        id: userData?.id || '',
-        email: userData?.email || email,
-        fullName: userData?.fullName || userData?.name || '',
-        roles: roles.map(role => role as Role),
-        businessName: userData?.businessName || '',
-        mobile: userData?.mobile || '',
-        country: userData?.country || '',
-        state: userData?.state || '',
-        city: userData?.city || '',
+        id: "", // your API doesn't return id
+        email: emailFromResponse || email,
+        fullName: "", // your API doesn't return fullName
+        roles: roles.map((role) => role as Role),
+        businessName: "",
+        mobile: "",
+        country: "",
+        state: "",
+        city: "",
       };
 
       // Use the auth context to sign in
-      signIn(accessToken, user);
-      
-      // Navigate based on user role
-      const isAgentLogin = roles.includes(Role.agent.toString());
-      setTimeout(() => {
-        isAgentLogin
-          ? navigate("/dashboard/home")
-          : navigate("/admin/dashboard");
-      }, 500);
-      
+      try {
+        signIn(accessToken, user);
+        
+        // Show success message
+        toast.success("Successfully signed in!");
+
+        // Navigate based on user roles with proper priority handling
+        const redirectPath = getRedirectPath(user.roles);
+        setTimeout(() => {
+          navigate(redirectPath);
+        }, 500);
+      } catch (authError: any) {
+        console.error('Authentication error:', authError);
+        toast.error(authError.message || "Authentication failed. Please contact support.");
+        return;
+      }
     } catch (err: any) {
+      console.error('Login error:', err);
+      
       if (!err?.response) {
-        setErrMsg("No Server Response");
+        toast.error("No server response. Please check your connection.");
       } else if (err.response?.status === 400) {
-        setErrMsg("Missing Username or Password");
+        toast.error("Please provide both email and password.");
       } else if (err.response?.status === 401) {
-        setErrMsg("Unauthorized");
+        toast.error("Invalid email or password. Please try again.");
+      } else if (err.response?.status >= 500) {
+        toast.error("Server error. Please try again later.");
       } else {
-        setErrMsg("Login Failed");
+        toast.error("Login failed. Please try again.");
       }
     } finally {
       setIsLoading(false);
@@ -106,7 +113,6 @@ export function SignIn() {
               Sign In
             </Typography>
           </CardHeader>
-          {errMsg && <h2>{errMsg}</h2>}
           <form onSubmit={handleSubmit}>
             <CardBody className="flex flex-col gap-4">
               {/* <Select label="Select Role">
@@ -131,7 +137,12 @@ export function SignIn() {
                 <Checkbox label="Remember Me" />
               </div>
             </CardBody>
-            <Button variant="gradient" fullWidth type="submit" disabled={isLoading}>
+            <Button
+              variant="gradient"
+              fullWidth
+              type="submit"
+              disabled={isLoading}
+            >
               {isLoading ? "Signing In..." : "Sign In"}
             </Button>
           </form>

@@ -2,11 +2,14 @@ import { useLocation, Routes, Route } from "react-router-dom";
 //importing react slick slider
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+// Import toast CSS
+import 'react-toastify/dist/ReactToastify.css';
 import { animateScroll } from "react-scroll";
 import { useEffect, Suspense } from "react";
 import { allRoutes } from "./routes";
 import ErrorBoundary from "./components/common/ErrorBoundary";
 import { PageLoader } from "./components/common/LoadingSpinner";
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   // Using useLocation() + useEffect for scroll reset on route change
@@ -34,6 +37,20 @@ function App() {
             ))}
           </Routes>
         </Suspense>
+        
+        {/* Toast container for notifications */}
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
       </div>
     </ErrorBoundary>
   );

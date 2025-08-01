@@ -3,51 +3,53 @@ import {
     UserPlusIcon,
     UserIcon,
     ChartBarIcon,
+    PhoneIcon,
+    CheckCircleIcon,
   } from "@heroicons/react/24/solid";
   
   export const statisticsCardsData = [
     {
       color: "blue",
-      icon: ChartBarIcon,
-      title: "Lead Overview",
-      value: "$53k",
-      footer: {
-        color: "text-green-500",
-        value: "+55%",
-        label: "than last week",
-      },
-    },
-    {
-      color: "pink",
       icon: UserIcon,
-      title: "Sales Pipeline",
-      value: "2,300",
+      title: "Total Leads",
+      value: "1,247",
       footer: {
         color: "text-green-500",
-        value: "+3%",
+        value: "+12%",
         label: "than last month",
       },
     },
     {
       color: "green",
-      icon: UserPlusIcon,
-      title: "New Clients",
-      value: "3,462",
+      icon: CheckCircleIcon,
+      title: "Deals Closed",
+      value: "89",
       footer: {
-        color: "text-red-500",
-        value: "-2%",
-        label: "than yesterday",
+        color: "text-green-500",
+        value: "+8%",
+        label: "than last month",
       },
     },
     {
       color: "orange",
       icon: BanknotesIcon,
-      title: "Sales",
-      value: "$103,430",
+      title: "Revenue",
+      value: "$284,430",
       footer: {
         color: "text-green-500",
-        value: "+5%",
-        label: "than yesterday",
+        value: "+15%",
+        label: "than last month",
+      },
+    },
+    {
+      color: "pink",
+      icon: PhoneIcon,
+      title: "Follow-ups Today",
+      value: "23",
+      footer: {
+        color: "text-red-500",
+        value: "5 overdue",
+        label: "need attention",
       },
     },
   ];
