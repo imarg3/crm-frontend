@@ -15,14 +15,19 @@ const NavBar = () => {
   // const [scrollY, setScrollY] = useState(0);
   const [navBarColor, setNavBarColor] = useState(false);
 
+  // Maintains open state to show/hide a mobile-friendly sidebar menu using a sliding animation.
   const handleToggle = () => {
     setOpen(!open);
   };
 
+  /*
+  * If user scrolls down more than 10px, it changes the navbar background from transparent to white using navBarColor state:
+  */
   const listenScrollEvent = () => {
     window.scrollY > 10 ? setNavBarColor(true) : setNavBarColor(false);
   };
 
+  // Listens for scroll events
   useEffect(() => {
     window.addEventListener("scroll", listenScrollEvent);
     return () => {
@@ -32,6 +37,7 @@ const NavBar = () => {
 
   return (
     <header className="w-full h-auto bg-transparent overflow-x-hidden fixed z-50 top-0 left-0">
+      {/* Uses react-awesome-reveal to animate the top nav bar sliding in from the top */}
       <Slide direction="down">
         <nav
           className={`w-full md:h-24 h-20 ${
@@ -41,7 +47,7 @@ const NavBar = () => {
           <Image
             as="a"
             href="/"
-            className="md:h-10 h-8"
+            className="h-36 w-auto object-contain"
             image={Logo}
             alt="Logo"
           />

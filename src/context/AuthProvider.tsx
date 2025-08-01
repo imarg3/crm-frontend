@@ -1,5 +1,11 @@
+/**
+ * The AuthProvider manages the global authentication state of our app: login, logout, current user, roles, token, etc.
+ * It uses React Context so we can access auth state in any component using useAuth().
+ */
+
 import { createContext, useState, useContext, useEffect, ReactNode } from 'react';
 import { Role } from '../model/enums';
+import { hasValidRole } from '../utils/auth/roleNavigation';
 
 // Define the User interface
 interface User {
@@ -14,7 +20,8 @@ interface User {
   city?: string;
 }
 
-// Define the AuthContext interface
+// Define the AuthContext interface - This is what the context will provide to the rest of the app
+// Defines what data/functions the context will expose
 interface AuthContextType {
   user: User | null;
   token: string | null;
@@ -32,10 +39,10 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Create the context with default values
+// Create the context with default values which is later used in `useAuth()`
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Auth Provider component
+// Auth Provider component - This is the actual global wrapper for our app
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
@@ -49,8 +56,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         const storedUser = localStorage.getItem('user-data');
         
         if (storedToken && storedUser) {
-          setToken(storedToken);
-          setUser(JSON.parse(storedUser));
+          const parsedUser = JSON.parse(storedUser);
+          
+          // Validate that stored user has valid roles
+          if (hasValidRole(parsedUser.roles)) {
+            setToken(storedToken);
+            setUser(parsedUser);
+          } else {
+            console.warn('Stored user has invalid roles, clearing auth data:', parsedUser.roles);
+            localStorage.removeItem('user-token');
+            localStorage.removeItem('user-data');
+          }
         }
       } catch (error) {
         console.error('Failed to initialize auth from localStorage:', error);
@@ -67,6 +83,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   // Sign in function
   const signIn = (newToken: string, userData: User) => {
+    // Validate that the user has valid roles before signing in
+    if (!hasValidRole(userData.roles)) {
+      console.warn('Attempted sign-in with invalid roles:', userData.roles);
+      throw new Error('User does not have valid permissions for this application');
+    }
+
     setToken(newToken);
     setUser(userData);
     localStorage.setItem('user-token', newToken);
@@ -75,10 +97,27 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   // Sign out function
   const signOut = () => {
-    setToken(null);
-    setUser(null);
-    localStorage.removeItem('user-token');
-    localStorage.removeItem('user-data');
+    try {
+      // Clear state
+      setToken(null);
+      setUser(null);
+      
+      // Clear localStorage
+      localStorage.removeItem('user-token');
+      localStorage.removeItem('user-data');
+      
+      // Optional: You can add analytics tracking here
+      console.log('User successfully signed out');
+      
+      // Optional: Clear any other app-specific data
+      // localStorage.clear(); // Use with caution - this clears ALL localStorage
+      
+    } catch (error) {
+      console.error('Error during sign out:', error);
+      // Even if there's an error, we should still clear the auth state
+      setToken(null);
+      setUser(null);
+    }
   };
 
   // Update user function

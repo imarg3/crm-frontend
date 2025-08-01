@@ -36,10 +36,17 @@ api.interceptors.response.use(
   (error: AxiosError) => {
     // Handle common error cases
     if (error.response?.status === 401) {
-      // Token expired or invalid
-      localStorage.removeItem('user-token');
-      localStorage.removeItem('user-data');
-      window.location.href = '/sign-in';
+      // Only redirect if not on sign-in or sign-up pages
+      const currentPath = window.location.pathname;
+      const isOnAuthPage = currentPath === '/sign-in' || currentPath === '/sign-up';
+      
+      if (!isOnAuthPage) {
+        // Token expired or invalid - redirect only if not on auth pages
+        localStorage.removeItem('user-token');
+        localStorage.removeItem('user-data');
+        window.location.href = '/sign-in';
+      }
+      // If on auth pages, let the component handle the error
     } else if (error.response?.status === 403) {
       // Forbidden - insufficient permissions
       console.error('Access forbidden:', error.response.data);
